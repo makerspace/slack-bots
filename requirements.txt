@@ -1,0 +1,1 @@
+slack-machine==0.20.1
