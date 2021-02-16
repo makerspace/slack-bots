@@ -1,0 +1,16 @@
+[Unit]
+Description=Slack bot service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+EnvironmentFile=-/home/ubuntu/slack-bots/.env
+Type=simple
+Restart=always
+RestartSec=1
+User=ubuntu
+WorkingDirectory=/home/ubuntu/slack-bots
+ExecStart=/home/ubuntu/.local/bin/slack-machine
+
+[Install]
+WantedBy=multi-user.target
