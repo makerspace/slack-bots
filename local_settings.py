@@ -1,3 +1,5 @@
 PLUGINS = ['machine.plugins.builtin.general.HelloPlugin',
            'machine.plugins.builtin.general.PingPongPlugin',
-           'plugins.nyckelbott.AnswerKeyQuestionsPlugin']
+           'plugins.faqbott.AnswerFAQPlugin']
+
+COMMAND_TOKEN = '!'
