@@ -5,8 +5,7 @@ import re
 class AnswerFAQPlugin(MachineBasePlugin):
     commandToken = '!'
    
-    def createRegEx(word):
-        commandToken = '!'
+    def createRegEx(commandToken, word):
         return r'^'+re.escape(commandToken)+'\s*'+re.escape(word)+'\s*$'
         
     def sendMessage(self, msg, msgToSend):
@@ -15,29 +14,29 @@ class AnswerFAQPlugin(MachineBasePlugin):
         else:
             msg.say(msgToSend)
 
-    @listen_to(regex=createRegEx('about'))
+    @listen_to(regex=createRegEx(commandToken, 'about'))
     def aboutQuestion(self, msg):
         msgToSend="Vi har lite olika slack bottar.\nFAQ bot: "+self.commandToken+"aboutfaq"
         self.sendMessage(msg, msgToSend)
 
-    @listen_to(regex=createRegEx('aboutfaq'))
+    @listen_to(regex=createRegEx(commandToken,'aboutfaq'))
     def aboutFAQQuestion(self, msg):
         msgToSend="Faq botten svarar på diverse frågor.\n !nyckel !box !faq"
         self.sendMessage(msg, msgToSend)
 
-    @listen_to(regex=createRegEx('faq'))
+    @listen_to(regex=createRegEx(commandToken,'faq'))
     def faqQuestion(self, msg):
         msgToSend="Makerspace FAQ: https://wiki.makerspace.se/Makerspace_FAQ"
         self.sendMessage(msg, msgToSend)
 
     @listen_to(regex=r'nyckelutlämning.*\?')
-    @listen_to(regex=createRegEx('nyckel'))
+    @listen_to(regex=createRegEx(commandToken,'nyckel'))
     def keyQuestion(self, msg):
         msgToSend=":key: Du vill nog ha info om nyckelutlämningar. TBC :)"
         self.sendMessage(msg, msgToSend)
 
-    @listen_to(regex=createRegEx('box'))
-    @listen_to(regex=createRegEx('låda'))
+    @listen_to(regex=createRegEx(commandToken,'box'))
+    @listen_to(regex=createRegEx(commandToken,'låda'))
     def boxQuestion(self, msg):
         msgToSend="Maximala måtten för labblåda är ca 50 x 39 x 26 cm. Mer info om förvaring på spacet och exempel på lådor finns på: https://wiki.makerspace.se/Makerspace_FAQ#F%C3%B6rvaring"
         self.sendMessage(msg, msgToSend)
