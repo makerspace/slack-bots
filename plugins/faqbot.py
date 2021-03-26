@@ -1,42 +1,35 @@
 from machine.plugins.base import MachineBasePlugin
 from machine.plugins.decorators import listen_to
 import re
+import slackHelper as helper
 
 class AnswerFAQPlugin(MachineBasePlugin):
-    commandToken = '!'
    
-    def createRegEx(commandToken, word):
-        return r'^'+re.escape(commandToken)+'\s*'+re.escape(word)+'\s*$'
-        
-    def sendMessage(self, msg, msgToSend):
-        if msg.in_thread or not msg.text[0] == self.commandToken:
-            msg.reply(msgToSend, in_thread=True)
-        else:
-            msg.say(msgToSend)
+   #TODO use message payload for the weblinks?
 
-    @listen_to(regex=createRegEx(commandToken, 'about'))
-    def aboutQuestion(self, msg):
-        msgToSend="Vi har lite olika slack bottar.\nFAQ bot: "+self.commandToken+"aboutfaq"
-        self.sendMessage(msg, msgToSend)
+    @listen_to(regex=helper.createRegEx('about'))
+    def aboutBotsQuestion(self, msg):
+        msgToSend="Vi har lite olika slack bottar.\nFAQ bot: "+helper.commandChar+"faqbot"
+        helper.sendMessage(msg, msgToSend)
 
-    @listen_to(regex=createRegEx(commandToken,'aboutfaq'))
+    @listen_to(regex=helper.createRegEx('!faqbot'))
     def aboutFAQQuestion(self, msg):
-        msgToSend="Faq botten svarar på diverse frågor.\n !nyckel !box !faq"
-        self.sendMessage(msg, msgToSend)
+        msgToSend="Faq botten svarar på diverse frågor.\n !nyckel !box !faq" #TODO list commandas somehow?
+        helper.sendMessage(msg, msgToSend)
 
-    @listen_to(regex=createRegEx(commandToken,'faq'))
+    @listen_to(regex=helper.createRegEx('faq'))
     def faqQuestion(self, msg):
         msgToSend="Makerspace FAQ: https://wiki.makerspace.se/Makerspace_FAQ"
-        self.sendMessage(msg, msgToSend)
+        helper.sendMessage(msg, msgToSend)
 
     @listen_to(regex=r'nyckelutlämning.*\?')
-    @listen_to(regex=createRegEx(commandToken,'nyckel'))
+    @listen_to(regex=helper.createRegEx('nyckel'))
     def keyQuestion(self, msg):
         msgToSend=":key: Du vill nog ha info om nyckelutlämningar. TBC :)"
-        self.sendMessage(msg, msgToSend)
+        helper.sendMessage(msg, msgToSend)
 
-    @listen_to(regex=createRegEx(commandToken,'box'))
-    @listen_to(regex=createRegEx(commandToken,'låda'))
+    @listen_to(regex=helper.createRegEx('box'))
+    @listen_to(regex=helper.createRegEx('låda'))
     def boxQuestion(self, msg):
         msgToSend="Maximala måtten för labblåda är ca 50 x 39 x 26 cm. Mer info om förvaring på spacet och exempel på lådor finns på: https://wiki.makerspace.se/Makerspace_FAQ#F%C3%B6rvaring"
-        self.sendMessage(msg, msgToSend)
+        helper.sendMessage(msg, msgToSend)
