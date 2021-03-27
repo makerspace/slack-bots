@@ -19,3 +19,6 @@ class MachineStatusPlugin(MachineBasePlugin):
     def getStatusSlack(self, msg):
         msgToSend="Hämta maskin status, paj eller inte?"
         helper.sendMessage(msg, msgToSend)
+
+#TODO addMachine
+#TODO list broken machine all or for specific room
