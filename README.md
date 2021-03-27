@@ -1,10 +1,11 @@
-# Project Title
+# Makerspace slack bots
 
-Slack bots used for Stockholm Makerspace
+Slack bots used at Stockholm Makerspace
 
-## Description
+## Usage
 
-The bots can do various things and answer questions
+Requires various environmental variables to be used for the Slack and Trello api.
+You also proably want to change things in local_settings.py.
 
 ### Dependencies
 
