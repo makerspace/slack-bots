@@ -1,9 +1,10 @@
 import os
 
+#TODO move to settings file
 commandChar = '!'
 argChar = ':'
 
-class SlackUtil:
+class Slack:
     
     def __init__(self, slackMachine):
         self.slackMachinePlugin = slackMachine
@@ -21,7 +22,20 @@ class SlackUtil:
             msg.reply(msgToSend, in_thread=True)
         self.slackMachinePlugin.say(self.logChannel, msgToSend)
 
+    def sendDirectMessage(self, msgToSend, user):
+        self.slackMachinePlugin.send_dm(user, msgToSend)
+
     def getArguments(self, msg):
         args = msg.text.split(argChar)[1:]
-        [item.strip() for item in args]
+        args = [item.strip() for item in args]
         return args
+
+    def getSlackUserByID(self, slackUsername): #TODO some exception when not found
+        return self.slackMachinePlugin.users[slackUsername]
+
+    def getSlackUserByName(self, slackUsername):
+        allUsers = self.slackMachinePlugin.users
+        for user in allUsers:
+            if allUsers[user].name == slackUsername:
+                return user
+        raise RuntimeError('Slack user:'+slackUserName+' not found')
