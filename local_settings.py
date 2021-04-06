@@ -1,4 +1,4 @@
-PLUGINS = [#'plugins.trellobot.TrelloPlugin',
+PLUGINS = ['plugins.trellobot.TrelloPlugin',
            #'plugins.machinestatusbot.MachineStatusPlugin',
            'plugins.faqbot.AnswerFAQPlugin']
 

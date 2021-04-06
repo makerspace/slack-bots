@@ -42,21 +42,26 @@ class Trello:
 
     def getUser(self, trelloUsername):
         self.trelloBoard.fetch()
-        allMembers = self.trelloBoard.all_members
+        allMembers = self.trelloBoard.all_members()
 
+        print('qwe')
+        print(allMembers)
         for member in allMembers:
+            #member.fetch()
             #TODO is fetched required on member?
             if member.username == trelloUsername:
                 return member
+        raise RuntimeError('Trello user not found')
 
     def getUserByID(self, trelloID):
         self.trelloBoard.fetch()
-        allMembers = self.trelloBoard.all_members
+        allMembers = self.trelloBoard.all_members()
 
         for member in allMembers:
             #TODO is fetched required on member?
             if member.id == trelloID:
                 return member
+        raise RuntimeError('Trello user not found')
 
     def getCard(self, card):
         self.trelloBoard.fetch()
@@ -84,10 +89,10 @@ class Trello:
         """
         return self.trelloNewCardList.add_card(cardName, desc=desc, labels=labels, due=due, position=position, assign=assign, source=source, keep_from_source=keep_from_source)
 
-    def completeCard(self, card):
+    def closeCard(self, card):
         if isinstance(card, str):
             card = self.getCard(card)
-        card.set_closed()
+        card.set_closed(True)
 
     def assign(self, card, trelloUser:TrelloUser):
         if isinstance(card, str):
