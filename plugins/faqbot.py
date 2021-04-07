@@ -56,12 +56,11 @@ class AnswerFAQPlugin(MachineBasePlugin):
     @listen_to(regex=command.regex)
     def keyQuestion(self, msg):
         event_nyckel = self.calendar.find_event('nyckelutlämning')
-    
         msgToSend = "Nyckelutlämningar sker just nu mer sporadiskt pga pandemin och det är endast tidsbokning som gäller vid varje tillfälle."
         if event_nyckel == None:
             msgToSend += "\n"+"Det finns ingen planerad nyckelutläming."
         else:
-            msgToSend += "\n"+"Nästa utlämning är " + str(event_nyckel.start_time)
+            msgToSend += "\n"+"Nästa utlämning är " + event_nyckel.start_time.strftime("%m/%d, %H:%M")
         self.slackUtil.sendMessage(msgToSend, msg)
 
     command = Command('box','Information om hur det fungerar med labblåda')
@@ -93,5 +92,7 @@ class AnswerFAQPlugin(MachineBasePlugin):
             slackUser = self.slackUtil.getSlackUserByID(event['user'])
             #TODO slack machine need to be fixed for this to work
             #self.slackUtil.sendDirectMessage("Hej du gick med i botlog kanalen", slackUser)
+
+#TODO printa till botlog när ny kanal skapats
 
 #TODO inköpsansvariga

@@ -36,7 +36,10 @@ class Calendar:
         else:
             raise TypeError(f"Unhandled input type: {type(dt)}")
 
-    def _fetch(self):
+    def _utc_to_local(dt):
+        return dt.replace(tzinfo=datetime.timezone.utc).astimezone(tz=None)
+
+    def _fetch(self): #TODO tidszonen verkar knas?
         req = request.urlopen(self._calendar_ical_url)
         ical_str = req.read()
         ical = ICal.from_ical(ical_str)
@@ -48,13 +51,17 @@ class Calendar:
             summary = str(event.get("summary"))
             description = Calendar._ellipsis(Calendar._escape_rn(str(event.get("description"))))
             dtstart = Calendar._dt_to_datetime(event.get("dtstart").dt)
+
+            if dtstart.tzinfo is not None:
+                if dtstart.tzinfo.utcoffset(dtstart) is not None:
+                    print
             if "dtend" not in event:
                 dtend = dtstart
             else:
                 dtend = Calendar._dt_to_datetime(event.get("dtend").dt)
 
             if now <= dtend:
-                ev = Event(summary, description, dtstart, dtend)
+                ev = Event(summary, description, Calendar._utc_to_local(dtstart), Calendar._utc_to_local(dtend))
                 self.events.append(ev)
         #TODO sort the events in order?
 
