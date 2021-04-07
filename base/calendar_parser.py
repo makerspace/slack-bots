@@ -39,7 +39,7 @@ class Calendar:
     def _utc_to_local(dt):
         return dt.replace(tzinfo=datetime.timezone.utc).astimezone(tz=None)
 
-    def _fetch(self): #TODO tidszonen verkar knas?
+    def _fetch(self):
         req = request.urlopen(self._calendar_ical_url)
         ical_str = req.read()
         ical = ICal.from_ical(ical_str)
@@ -69,5 +69,4 @@ class Calendar:
         self._fetch()
         for event in self.events:
             if re.match(r""+event_to_find, event.summary, re.IGNORECASE):
-                #print(f"Event\n\tsummary: {event.summary}\n\tdescription: {event.description}\n\tdtstart: {event.start_time}\n\tdtend: {event.end_time}")
                 return event

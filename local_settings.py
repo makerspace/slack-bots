@@ -1,6 +1,7 @@
 PLUGINS = ['plugins.trellobot.TrelloPlugin',
            #'plugins.machinestatusbot.MachineStatusPlugin',
-           'plugins.faqbot.AnswerFAQPlugin']
+           'plugins.faqbot.AnswerFAQPlugin',
+           'plugins.utilbot.UtilPlugin']
 
 SLACK_LOG_CHANNEL = 'botlog'
 

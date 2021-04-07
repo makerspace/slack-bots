@@ -36,13 +36,6 @@ class AnswerFAQPlugin(MachineBasePlugin):
         msgToSend="Faq botten svarar på diverse frågor\n Argument delas upp med :\n"+str(self.commands) #TODO fix : so it is in a settings file
         self.slackUtil.sendMessage(msgToSend, msg)
 
-    command = Command('about','Information om bottarna')
-    commands.add(command)
-    @listen_to(regex=command.regex)
-    def aboutBotsQuestion(self, msg):
-        msgToSend="Spacet har flera olika slack bottar.\n"+str(self.bots)
-        self.slackUtil.sendMessage(msgToSend, msg)
-
     command = Command('faq','Länk till Makerspace FAQ')
     commands.add(command)
     @listen_to(regex=command.regex)
@@ -85,14 +78,5 @@ class AnswerFAQPlugin(MachineBasePlugin):
         msgToSend="https://wiki.makerspace.se/"+argList[0]
         self.slackUtil.sendMessage(msgToSend, msg)
 
-    @process('member_joined_channel')
-    def newMemberJoinChannel(self, event):
-        if event['channel'] == self.find_channel_by_name("botlog").id: #TODO change to general when we are done
-            self.slackUtil.sendStatusMessage("new member joined botlog")
-            slackUser = self.slackUtil.getSlackUserByID(event['user'])
-            #TODO slack machine need to be fixed for this to work
-            #self.slackUtil.sendDirectMessage("Hej du gick med i botlog kanalen", slackUser)
-
-#TODO printa till botlog när ny kanal skapats
-
 #TODO inköpsansvariga
+
