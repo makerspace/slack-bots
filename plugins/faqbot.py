@@ -1,8 +1,9 @@
 from machine.plugins.base import MachineBasePlugin
 from machine.plugins.decorators import listen_to, process, on
-import re
+import re, os
 
 from base.slack import Slack
+from base.calendar_parser import Calendar, Event
 from utils.command_descriptions import Command, CommandDescriptions
 from utils.bot_descriptions import Bot, BotDescriptions
 
@@ -16,6 +17,11 @@ class AnswerFAQPlugin(MachineBasePlugin):
         self.bots = BotDescriptions()
         faqBot = Bot("faqbot", "svarar på diverse frågor")
         self.bots.add(faqBot)
+        
+        calendar_ical_url = os.getenv('BOT_CALENDAR_URL')
+        if calendar_ical_url == None:
+            raise RuntimeError('BOT_CALENDAR_URL not set')
+        self.calendar = Calendar(calendar_ical_url)
 
     #def init_final(self):
     @process('hello')
@@ -49,7 +55,13 @@ class AnswerFAQPlugin(MachineBasePlugin):
     @listen_to(regex=r'nyckelutlämning.*\?')
     @listen_to(regex=command.regex)
     def keyQuestion(self, msg):
-        msgToSend=":key: Du vill nog ha info om nyckelutlämningar. TBC :)" #TODO
+        event_nyckel = self.calendar.find_event('nyckelutlämning')
+    
+        msgToSend = "Nyckelutlämningar sker just nu mer sporadiskt pga pandemin och det är endast tidsbokning som gäller vid varje tillfälle."
+        if event_nyckel == None:
+            msgToSend += "\n"+"Det finns ingen planerad nyckelutläming."
+        else:
+            msgToSend += "\n"+"Nästa utlämning är " + str(event_nyckel.start_time)
         self.slackUtil.sendMessage(msgToSend, msg)
 
     command = Command('box','Information om hur det fungerar med labblåda')

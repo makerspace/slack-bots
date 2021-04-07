@@ -13,19 +13,18 @@ class Singleton(type):
 
 class Bot:
 
-    def __init__(self, name, desc):
+    def __init__(self, name, description):
         self.name = name
-        self.desc = desc
+        self.description = description
 
     def __str__(self):
-        return self.name+", "+self.desc
+        return self.name+", "+self.description
 
 class BotDescriptions(metaclass=Singleton):
     general_usage = "Argument delas upp med " + argChar
     
     def __init__(self):
         self.bots = []
-        print('asdf')
 
     def __str__(self):
         res = str(self.bots[0])
