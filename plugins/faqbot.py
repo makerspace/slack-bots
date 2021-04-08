@@ -53,7 +53,7 @@ class AnswerFAQPlugin(MachineBasePlugin):
         if event_nyckel == None:
             msgToSend += "\n"+"Det finns ingen planerad nyckelutläming."
         else:
-            msgToSend += "\n"+"Nästa utlämning är " + event_nyckel.start_time.strftime("%m/%d, %H:%M")
+            msgToSend += "\n"+"Nästa utlämning är " + event_nyckel.start_time.strftime("%d/%m, %H:%M")
         self.slackUtil.sendMessage(msgToSend, msg)
 
     command = Command('box','Information om hur det fungerar med labblåda')
