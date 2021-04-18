@@ -31,6 +31,7 @@ class AnswerFAQPlugin(MachineBasePlugin):
 
     command = Command('faqbot', 'Beskrivning av faq botten')
     commands.add(command)
+    @respond_to(regex=command.regex)
     @listen_to(regex=command.regex)
     def aboutFAQQuestion(self, msg):
         msgToSend="Faq botten svarar på diverse frågor\nArgument delas upp med :\n"+str(self.commands) #TODO fix : so it is in a settings file
@@ -67,7 +68,7 @@ class AnswerFAQPlugin(MachineBasePlugin):
     commands.add(command)
     @listen_to(regex=command.regex)
     def garbageQuestion(self, msg):
-        msgToSend="Nyckelkortet till soprummet finns i städskrubben. Soprummet ligger på lastkajen bakom huset. Mer info och karta till soprummet finns på: https://wiki.makerspace.se/Sophantering)"
+        msgToSend="Nyckelkortet till soprummet finns i städskrubben. Soprummet ligger på lastkajen bakom huset. Mer info och karta till soprummet finns på: https://wiki.makerspace.se/Sophantering"
         self.slackUtil.sendMessage(msgToSend, msg)
 
     command = Command('wiki','Länkar till wiki sidan som motsvarar argumentet', 1)
@@ -79,4 +80,6 @@ class AnswerFAQPlugin(MachineBasePlugin):
         self.slackUtil.sendMessage(msgToSend, msg)
 
 #TODO inköpsansvariga
+#TODO kurser/workshops med kalender grej
+#TODO kurser/workshop faq/info
 
