@@ -24,7 +24,7 @@ class TrelloPlugin(MachineBasePlugin):
     @process('hello')
     def start(self, event):
         self.slackUtil = Slack(self)
-        self.slackTrelloDB = SlackTrelloDB(self.slackUtil, self.trello)
+        self.slackTrelloDB = SlackTrelloDB(self.slackUtil, self.trello, self.settings['SLACK_TRELLO_USER_DB'], self.settings['SLACK_TRELLO_USER_TABLE'])
         self.slackUtil.sendStatusMessage("Trello bot started.")
 
     command = Command('trellobot', 'Beskrivning av trello botten')

@@ -33,7 +33,7 @@ class AnswerFAQPlugin(MachineBasePlugin):
     commands.add(command)
     @listen_to(regex=command.regex)
     def aboutFAQQuestion(self, msg):
-        msgToSend="Faq botten svarar på diverse frågor\n Argument delas upp med :\n"+str(self.commands) #TODO fix : so it is in a settings file
+        msgToSend="Faq botten svarar på diverse frågor\nArgument delas upp med :\n"+str(self.commands) #TODO fix : so it is in a settings file
         self.slackUtil.sendMessage(msgToSend, msg)
 
     command = Command('faq','Länk till Makerspace FAQ')

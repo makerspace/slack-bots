@@ -25,7 +25,7 @@ class UtilPlugin(MachineBasePlugin):
         self.slackUtil = Slack(self)
         self.slackUtil.sendStatusMessage("Util bot started.")
 
-    command = Command('about','Information om bottarna')
+    command = Command('about','Information om bottarna', aliases=['help'])
     commands.add(command)
     @listen_to(regex=command.regex)
     def aboutBotsQuestion(self, msg):

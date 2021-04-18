@@ -6,15 +6,16 @@ argChar = ':'
 
 class Command:
 
-    def __init__(self, command, description, numArg=None):
+    def __init__(self, command, description, numArg=None, aliases = None):
         self.command = command
         self.description = description
         self.numArg = numArg
+        self.aliases = aliases
         
         if self.numArg == None:
-            self.regex = Command.createRegEx(self.command)
+            self.regex = Command.createRegEx(self.command, aliases)
         else:
-            self.regex = Command.createRegExWithArgument(self.command, self.numArg)
+            self.regex = Command.createRegExWithArgument(self.command, self.numArg, aliases)
 
     def __str__(self):
         if self.numArg == None:
@@ -22,11 +23,25 @@ class Command:
         else:
             return commandChar+self.command+" tar "+str(self.numArg)+" argument. "+self.description
 
-    def createRegEx(word):
-        return r'^'+re.escape(commandChar)+'\s*'+re.escape(word)+'\s*$'
+    def _createRegEx(command):
+        return '^'+re.escape(commandChar)+'\s*'+re.escape(command)+'\s*$'
+
+    def _createRegExWithArgument(command, numArg):
+        return '^'+re.escape(commandChar)+'\s*'+re.escape(command)+'(\s*'+re.escape(argChar)+'\s*\w{1,}){'+re.escape(str(numArg))+'}\s*$'
+
+    def createRegEx(command, aliases):
+        regex_str = Command._createRegEx(command)
+        if aliases != None:
+            for a in aliases:
+                regex_str += '|'+Command._createRegEx(a)
+        return r''+regex_str
    
-    def createRegExWithArgument(word, numArg):
-        return r'^'+re.escape(commandChar)+'\s*'+re.escape(word)+'(\s*'+re.escape(argChar)+'\s*\w{1,}){'+re.escape(str(numArg))+'}\s*$'
+    def createRegExWithArgument(command, numArg, aliases):
+        regex_str = Command._createRegExWithArgument(command, numArg)
+        if aliases != None:
+            for a in aliases:
+                regex_str += '|'+Command._createRegExWithArgument(a, numArg)
+        return r''+regex_str
 
 class CommandDescriptions:
     
