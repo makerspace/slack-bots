@@ -1,5 +1,5 @@
 from machine.plugins.base import MachineBasePlugin
-from machine.plugins.decorators import listen_to, process, on
+from machine.plugins.decorators import respond_to, listen_to, process, on
 import re, os
 
 from base.slack import Slack
