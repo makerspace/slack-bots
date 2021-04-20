@@ -25,11 +25,11 @@ class UtilPlugin(MachineBasePlugin):
         self.slackUtil = Slack(self)
         self.slackUtil.sendStatusMessage("Util bot started.")
 
-    command = Command('about','Information om bottarna', aliases=['help'])
+    command = Command('about','Information om botten', aliases=['help'])
     commands.add(command)
     @listen_to(regex=command.regex)
     def aboutBotsQuestion(self, msg):
-        msgToSend="Spacet har flera olika slack bottar.\n"+str(self.bots)
+        msgToSend="Spacet har en slack bott med olika funktioner.\n"+str(self.bots)
         self.slackUtil.sendMessage(msgToSend, msg)
 
     @process('member_joined_channel')
@@ -37,8 +37,10 @@ class UtilPlugin(MachineBasePlugin):
         if event['channel'] == self.find_channel_by_name("botlog").id: #TODO change to general when we are done
             self.slackUtil.sendStatusMessage("New member joined botlog")
             slackUser = self.slackUtil.getSlackUserByID(event['user'])
-            #msgToSend = "Hej välkomen till Stocholm Makerspaces slack. Missa inte att lägga till kanaler som du vill följa (rum, maskiner och intresseområden). #events används för att annonsera saker som händer (nyckelsynkroniseringar, workshops, etc.).\nDet här medleandet är ifrån en bot som "
-            msgToSend = "Hej du gick med i botlog. Test"
+            msgToSend = "Hej välkomen till Stocholm Makerspaces slack. Missa inte att lägga till kanaler som du vill följa (rum, maskiner och intresseområden). #events används för att annonsera saker som händer (nyckelsynkroniseringar, workshops, etc.).\n"
+            msgToSend += "Det här meddelandet är ifrån en bot som bland annat kan svara på vanliga frågor. Test tex att skriva !faqbot tillbaka.\n"
+            msgToSend += "För generell information om botten använd !about"
+            #msgToSend = "Hej du gick med i botlog. Test"
             #self.slackUtil.sendDirectMessage(msgToSend, slackUser)
 
     @process('channel_created')

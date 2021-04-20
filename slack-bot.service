@@ -10,7 +10,7 @@ Restart=always
 RestartSec=1
 User=ubuntu
 WorkingDirectory=/home/ubuntu/slack-bots
-ExecStart=/home/ubuntu/.local/bin/slack-machine
+ExecStart=/home/ubuntu/slack-machine/slack-machine/machine/bin/run.py
 
 [Install]
 WantedBy=multi-user.target
