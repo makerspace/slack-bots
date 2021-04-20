@@ -19,9 +19,9 @@ class UtilPlugin(MachineBasePlugin):
             raise RuntimeError('BOT_CALENDAR_URL not set')
         self.calendar = Calendar(calendar_ical_url)
 
-    #def init_final(self):
-    @process('hello')
-    def start(self, event):
+    def init_final(self):
+    #@process('hello')
+    #def start(self, event):
         self.slackUtil = Slack(self)
         self.slackUtil.sendStatusMessage("Util bot started.")
 
