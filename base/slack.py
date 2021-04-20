@@ -10,8 +10,8 @@ class Slack:
         self.slackMachinePlugin = slackMachine
         self.logChannel = self.slackMachinePlugin.find_channel_by_name(self.slackMachinePlugin.settings['SLACK_LOG_CHANNEL'])
 
-    def sendMessage(self, msgToSend, msg):
-        if msg.in_thread or not msg.text[0] == commandChar:
+    def sendMessage(self, msgToSend, msg, always_thread = True):
+        if always_thread or msg.in_thread or not msg.text[0] == commandChar:
             msg.reply(msgToSend, in_thread=True)
         else:
             msg.say(msgToSend)

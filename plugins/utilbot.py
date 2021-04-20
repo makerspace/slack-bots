@@ -1,5 +1,5 @@
 from machine.plugins.base import MachineBasePlugin
-from machine.plugins.decorators import listen_to, process, on
+from machine.plugins.decorators import respond_to, listen_to, process, on
 import re, os
 
 from base.slack import Slack
@@ -35,10 +35,11 @@ class UtilPlugin(MachineBasePlugin):
     @process('member_joined_channel')
     def newMemberJoinChannel(self, event):
         if event['channel'] == self.find_channel_by_name("botlog").id: #TODO change to general when we are done
-            self.slackUtil.sendStatusMessage("new member joined botlog")
+            self.slackUtil.sendStatusMessage("New member joined botlog")
             slackUser = self.slackUtil.getSlackUserByID(event['user'])
-            #TODO slack machine need to be fixed for this to work
-            #self.slackUtil.sendDirectMessage("Hej du gick med i botlog kanalen", slackUser)
+            #msgToSend = "Hej välkomen till Stocholm Makerspaces slack. Missa inte att lägga till kanaler som du vill följa (rum, maskiner och intresseområden). #events används för att annonsera saker som händer (nyckelsynkroniseringar, workshops, etc.).\nDet här medleandet är ifrån en bot som "
+            msgToSend = "Hej du gick med i botlog. Test"
+            #self.slackUtil.sendDirectMessage(msgToSend, slackUser)
 
     @process('channel_created')
     def channelCreated(self, event):

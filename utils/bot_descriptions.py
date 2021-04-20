@@ -21,7 +21,7 @@ class Bot:
         return self.name+", "+self.description
 
 class BotDescriptions(metaclass=Singleton):
-    general_usage = "Argument delas upp med " + argChar
+    general_usage = "Argument delas upp med " + argChar + ". För mer information om en specifik bot använd " + commandChar + "med namnet på botten."
     
     def __init__(self):
         self.bots = []

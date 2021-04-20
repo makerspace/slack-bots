@@ -8,14 +8,14 @@ from utils.command_descriptions import Command, CommandDescriptions
 from utils.bot_descriptions import Bot, BotDescriptions
 
 class AnswerFAQPlugin(MachineBasePlugin):
-   
+
     #TODO use message payload for the weblinks?
 
     commands = CommandDescriptions()
 
     def init(self):
         self.bots = BotDescriptions()
-        faqBot = Bot("faqbot", "svarar på diverse frågor")
+        faqBot = Bot("faqbot", "svarar på diverse frågor.")
         self.bots.add(faqBot)
         
         calendar_ical_url = os.getenv('BOT_CALENDAR_URL')
@@ -23,15 +23,14 @@ class AnswerFAQPlugin(MachineBasePlugin):
             raise RuntimeError('BOT_CALENDAR_URL not set')
         self.calendar = Calendar(calendar_ical_url)
 
-    #def init_final(self):
-    @process('hello')
-    def start(self, event):
+    def init_final(self):
+    #@process('hello')
+    #def start(self, event):
         self.slackUtil = Slack(self)
         self.slackUtil.sendStatusMessage("FAQ bot started.")
 
-    command = Command('faqbot', 'Beskrivning av faq botten')
+    command = Command("faqbot", "Beskrivning av faq botten", aliases=["aboutfaqbot"])
     commands.add(command)
-    @respond_to(regex=command.regex)
     @listen_to(regex=command.regex)
     def aboutFAQQuestion(self, msg):
         msgToSend="Faq botten svarar på diverse frågor\nArgument delas upp med :\n"+str(self.commands) #TODO fix : so it is in a settings file
