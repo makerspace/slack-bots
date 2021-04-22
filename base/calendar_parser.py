@@ -63,7 +63,7 @@ class Calendar:
             if now <= dtend:
                 ev = Event(summary, description, Calendar._utc_to_local(dtstart), Calendar._utc_to_local(dtend))
                 self.events.append(ev)
-        #TODO sort the events in order?
+        self.events.sort(key=lambda x: x.start_time, reverse=False)
 
     def find_event(self, event_to_find):
         self._fetch()

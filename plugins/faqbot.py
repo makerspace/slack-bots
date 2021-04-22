@@ -27,7 +27,7 @@ class AnswerFAQPlugin(MachineBasePlugin):
     #@process('hello')
     #def start(self, event):
         self.slackUtil = Slack(self)
-        self.slackUtil.sendStatusMessage("FAQ bot started.")
+        self.slackUtil.sendStatusMessage("FAQ plugin started.")
 
     command = Command("faqbot", "Beskrivning av faq botten", aliases=["aboutfaqbot"])
     commands.add(command)
