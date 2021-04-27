@@ -1,6 +1,6 @@
 PLUGINS = ['machine.plugins.builtin.general.PingPongPlugin',
            #'plugins.trellobot.TrelloPlugin',
-           #'plugins.machinestatusbot.MachineStatusPlugin',
+           #'plugins.machinebot.MachinePlugin',
            'plugins.faqbot.AnswerFAQPlugin',
            'plugins.utilbot.UtilPlugin']
 

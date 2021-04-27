@@ -34,7 +34,7 @@ class UtilPlugin(MachineBasePlugin):
 
     @process('member_joined_channel')
     def newMemberJoinChannel(self, event):
-        if event['channel'] == self.find_channel_by_name("botlog").id: #TODO change to general when we are done
+        if event['channel'] == self.find_channel_by_name("general").id:
             self.slackUtil.sendStatusMessage("New member joined botlog")
             slackUser = self.slackUtil.getSlackUserByID(event['user'])
             msgToSend = "Hej välkomen till Stocholm Makerspaces slack. Missa inte att lägga till kanaler som du vill följa (rum, maskiner och intresseområden). #events används för att annonsera saker som händer (nyckelsynkroniseringar, workshops, etc.).\n"

@@ -1,4 +1,4 @@
-import re, os, mysql.connector
+import re, os
 from machine.plugins.base import MachineBasePlugin
 from machine.plugins.decorators import respond_to, listen_to, process, on
 from trello import Member as TrelloUser
@@ -17,8 +17,8 @@ class TrelloPlugin(MachineBasePlugin):
     def init(self):
         self.trello = Trello(self.settings['TRELLO_BOARD_URL'], self.settings['TRELLO_LIST_NEW_CARDS'])
         self.bots = BotDescriptions()
-        faqBot = Bot("trellobot", "har funktioner för att hantera kort på trello som används för spacets att-göra lista.")
-        self.bots.add(faqBot)
+        trelloBot = Bot("trellobot", "har funktioner för att hantera kort på trello som används för spacets att-göra lista.")
+        self.bots.add(trelloBot)
 
     def init_final(self):
     #@process('hello')
