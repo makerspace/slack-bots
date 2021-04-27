@@ -18,7 +18,7 @@ class Slack:
             msg.say(msgToSend)
 
     def sendStatusMessage(self, msgToSend, msg=None):
-        print(msgToSend) #TODO Print to log file?
+        print(msgToSend)
         if msg != None:
             msg.reply(msgToSend, in_thread=True)
         self.slackMachinePlugin.say(self.logChannel, msgToSend)
@@ -31,10 +31,10 @@ class Slack:
         args = [item.strip() for item in args]
         return args
 
-    def getSlackUserByID(self, slackUsername): #TODO some exception when not found
+    def getUserByID(self, slackUsername): #TODO some exception when not found
         return self.slackMachinePlugin.users[slackUsername]
 
-    def getSlackUserByName(self, slackUsername):
+    def getUserByName(self, slackUsername):
         allUsers = self.slackMachinePlugin.users
         for user in allUsers:
             if allUsers[user].name == slackUsername:

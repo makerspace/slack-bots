@@ -38,9 +38,8 @@ class UtilPlugin(MachineBasePlugin):
             self.slackUtil.sendStatusMessage("New member joined botlog")
             slackUser = self.slackUtil.getSlackUserByID(event['user'])
             msgToSend = "Hej välkomen till Stocholm Makerspaces slack. Missa inte att lägga till kanaler som du vill följa (rum, maskiner och intresseområden). #events används för att annonsera saker som händer (nyckelsynkroniseringar, workshops, etc.).\n"
-            msgToSend += "Det här meddelandet är ifrån en bot som bland annat kan svara på vanliga frågor. Testa tex att skriva !faqbot i den här chatten med botten.\n"
+            msgToSend += "Det här meddelandet är ifrån en bot som bland annat kan svara på vanliga frågor. Testa tex att skriva !faqbot i den här chatten med botten.\n" #TODO ! to settings file
             msgToSend += "För generell information om botten använd !about"
-            #msgToSend = "Hej du gick med i botlog. Test"
             #self.slackUtil.sendDirectMessage(msgToSend, slackUser)
 
     @process('channel_created')

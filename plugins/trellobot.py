@@ -67,19 +67,35 @@ class TrelloPlugin(MachineBasePlugin):
         argList = self.slackUtil.getArguments(msg)
         slackUser = msg.sender
         trelloUsername = argList[0]
-        trelloUser = self.trello.getUser(trelloUsername)
-        
-        print("return")
-        
-        self.slackTrelloDB.addUser(slackUser, trelloUser)
-        self.slackUtil.sendStatusMessage('Succesfully stored slack, trello user association', msg)
+        try:
+            trelloUser = self.trello.getUserByName(trelloUsername)
+        except:
+            self.slackUtil.sendStatusMessage("Can not find trello user: "+trelloUsername, msg)
+            return
+
+        try:
+            self.slackTrelloDB.addUser(slackUser, trelloUser)
+        except:
+            self.slackUtil.sendStatusMessage("Failed to add to database", msg)
+            return
+        self.slackUtil.sendStatusMessage("Succesfully stored slack, trello user association", msg)
 
 #TODO unlink trellouser thingy
 
     def _assign(self, cardName, slackUser):
         if isinstance(slackUser, str):
-            slackUser = self.slackUtil.getSlackUserByName(slackUser)
-        trelloUser = self.slackTrelloDB.getTrelloUser(slackUser)
+            try:
+                slackUser = self.slackUtil.getUserByName(slackUser)
+            except:
+                self.slackUtil.sendStatusMessage("Can not find slack user: "+slackUser, msg)
+                return
+
+        try:
+            trelloUser = self.slackTrelloDB.getTrelloUser(slackUser)
+        except:
+            self.slackUtil.sendStatusMessage("Can not find corresponding trello user in database", msg)
+            return
+
         self.trello.assign(cardName, trelloUser)
         self.slackUtil.sendStatusMessage('Succesfully assigned card', msg)
 
@@ -101,14 +117,14 @@ class TrelloPlugin(MachineBasePlugin):
         slackUser = msg.sender
         self._assign(cardName, slackUser)
 
-#TODO unassign
+#TODO unassignme and unassign
 
     command = Command('mycards', 'Listar öppna kort som du har blivit tilldelad')
     commands.add(command)
     @listen_to(regex=command.regex)
     def myCards(self, msg):
         slackUser = msg.sender
-        #TODO remeber to only taken the open ones
+        #TODO remember to only get the open cards
 
 #TODO all open cards, put it in a general def?
 #TODO all open cards with the channel as label, put it in a general def?

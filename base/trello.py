@@ -40,7 +40,7 @@ class Trello:
         
         print('Using trello list named '+self.trelloNewCardList.name)
 
-    def getUser(self, trelloUsername):
+    def getUserByName(self, trelloUsername):
         self.trelloBoard.fetch()
         allMembers = self.trelloBoard.all_members()
 

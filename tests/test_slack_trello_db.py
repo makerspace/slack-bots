@@ -1,9 +1,11 @@
-import re, os, pytest, mock, mysql.connector
+import re, os, pytest, mysql.connector
 from pytest_mock import mocker
 
 from databases.slack_trello_database import SlackTrelloDB
 from tests.mocks.slack_user import SlackUserMock
 from tests.mocks.trello_user import TrelloUserMock
+from tests.mocks.slack import SlackMock
+from tests.mocks.trello import TrelloMock
 
 class TestSlackTrelloDB:
 
@@ -74,18 +76,18 @@ class TestSlackTrelloDB:
 
     @pytest.fixture
     def init(self, request):
-        slack_trello = SlackTrelloDB("a", "a", self.db_name, self.table_name)
+        slack_trello = SlackTrelloDB(SlackMock(), TrelloMock(), self.db_name, self.table_name)
         slack_users = []
         trello_users = []
         for i in range(request.param):
-            slack_user = SlackUserMock(str(i)+" Slack", 100+i)
-            trello_user = TrelloUserMock(str(i)+" Trello", 200+i)
+            slack_user = SlackUserMock(str(i)+" Slack", 's'+str(i))
+            trello_user = TrelloUserMock(str(i)+" Trello", 't'+str(i))
             slack_users.append(slack_user)
             trello_users.append(trello_user)
             slack_trello.addUser(slack_user, trello_user)
         return slack_trello, slack_users, trello_users
 
-    @pytest.mark.parametrize("init", [1], indirect=["init"]) #TODO 5
+    @pytest.mark.parametrize("init", [1,5], indirect=["init"])
     def test_add_user(self, setup_teardown, init):
         slack_trello_DB, slack_users, trello_users = init
         self.check_users(slack_users, trello_users)
@@ -117,18 +119,38 @@ class TestSlackTrelloDB:
         slack_trello_DB, slack_users, trello_users = init
         self.check_users(slack_users, trello_users)
 
-        #slack_trello_DB.removeUserByTrello()
+        index = 1
+        slack_trello_DB.removeUserByTrello(trello_users[index])
+        slack_users.remove(slack_users[index])
+        trello_users.remove(trello_users[index])
+        self.check_users(slack_users, trello_users)
+
+        for i in range(len(slack_users)):
+            slack_trello_DB.removeUserByTrello(trello_users[i])
+        self.check_users([], [])
 
     @pytest.mark.parametrize("init", [5], indirect=["init"])
-    def test_get_slack_user(self, setup_teardown, init): #TODO mock getSlackUserByID
+    def test_get_slack_user(self, setup_teardown, init):
         slack_trello_DB, slack_users, trello_users = init
         self.check_users(slack_users, trello_users)
 
-        #TODO get stuff
+        for i in range(len(slack_users)):
+            assert slack_trello_DB.getSlackUser(trello_users[i]) == slack_users[i].id
+
+        with pytest.raises(ValueError):
+            slack_trello_DB.getSlackUser(TrelloUserMock('fake','fake'))
+
+        self.check_users(slack_users, trello_users)
 
     @pytest.mark.parametrize("init", [5], indirect=["init"])
-    def test_get_trello_user(self, setup_teardown, init): #TODO mock getTrelloUserByID
+    def test_get_trello_user(self, setup_teardown, init):
         slack_trello_DB, slack_users, trello_users = init
         self.check_users(slack_users, trello_users)
 
-        #TODO get stuff
+        for i in range(len(slack_users)):
+            assert slack_trello_DB.getTrelloUser(slack_users[i]) == trello_users[i].id
+
+        with pytest.raises(ValueError):
+            slack_trello_DB.getTrelloUser(SlackUserMock('fake','fake'))
+
+        self.check_users(slack_users, trello_users)

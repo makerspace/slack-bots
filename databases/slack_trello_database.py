@@ -48,19 +48,10 @@ class SlackTrelloDB():
     def removeUserBySlack(self, slackUser : SlackUser):
         #TODO raise exception based on how it goes
         self._openDB()
-        print(slackUser.id)
-        print(slackUser.name)
-
         sql = "DELETE FROM " + self._table_name + " WHERE slackID = %s"
         data = (slackUser.id,)
         self._dbCursor.execute(sql, data)
         self._db.commit()
-
-        #sql = "SELECT * FROM " + self._table_name
-        #self._dbCursor.execute(sql)
-        #result = self._dbCursor.fetchall()
-        #result.close()
-        #print("A "+result)
         self._closeDB()
 
     def removeUserByTrello(self, trelloUser : TrelloUser):
@@ -73,7 +64,6 @@ class SlackTrelloDB():
         self._closeDB()
 
     def getSlackUser(self, trelloUser: TrelloUser):
-        #TODO raise exception based on how it goes
         self._openDB()
         sql = "SELECT * FROM "+self._table_name+" WHERE trelloID = %s"
         data = (trelloUser.id,)
@@ -81,13 +71,14 @@ class SlackTrelloDB():
         result = self._dbCursor.fetchall()
         self._closeDB()
 
-        if len(result) != 0:
-            raise RunetimeError("Database error, multiple users with same ID.")
-        slack_id = result[0][4]
-        return self._slack.getSlackUserByID(slack_id)
+        if len(result) == 0:
+            raise ValueError("No trello user in DB with: "+trelloUser.id+ " "+trelloUser.username)
+        if len(result) != 1:
+            raise RuntimeError("Database error, multiple users with same ID.")
+        slack_id = result[0][2]
+        return self._slack.getUserByID(slack_id)
 
     def getTrelloUser(self, slackUser : SlackUser):
-        #TODO raise exception based on how it goes
         self._openDB()
         sql = "SELECT * FROM "+self._table_name+" WHERE slackID = %s"
         data = (slackUser.id,)
@@ -95,7 +86,9 @@ class SlackTrelloDB():
         result = self._dbCursor.fetchall()
         self._closeDB()
 
-        if len(result) != 0:
-            raise RunetimeError("Database error, multiple users with same ID.")
-        trello_id = result[0][2]
+        if len(result) == 0:
+            raise ValueError("No slack user in DB with: "+slackUser.id+ " "+slackUser.name)
+        if len(result) != 1:
+            raise RuntimeError("Database error, multiple users with same ID.")
+        trello_id = result[0][4]
         return self._trello.getUserByID(trello_id)
