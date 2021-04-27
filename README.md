@@ -1,6 +1,6 @@
 # Makerspace slack bots
 
-Slack bots used at Stockholm Makerspace
+Slack bot used at Stockholm Makerspace based on slack-machine and py-trello. The bot is able to answer various faq questions as well as find calender events. A Trello board is used as a TODO list for the makerspace.
 
 ## Usage
 
