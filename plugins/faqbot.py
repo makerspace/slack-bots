@@ -49,7 +49,7 @@ class AnswerFAQPlugin(MachineBasePlugin):
     @listen_to(regex=command.regex)
     def keyQuestion(self, msg):
         event_nyckel = self.calendar.find_event('nyckelutlämning')
-        msgToSend = "Nyckelutlämningar sker just nu mer sporadiskt pga pandemin och det är endast tidsbokning som gäller vid varje tillfälle."
+        msgToSend = "Nyckelutlämningar sker ungefär varannan vecka och du måste boka en tid. Länken finns i Kalendariet https://www.makerspace.se/kalendarium"
         if event_nyckel == None:
             msgToSend += "\n"+"Det finns ingen planerad nyckelutläming."
         else:
