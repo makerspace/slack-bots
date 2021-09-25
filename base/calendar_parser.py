@@ -1,6 +1,7 @@
 from icalendar import Calendar as ICal, Event as IEvent
 from urllib import request
 import datetime, re, os
+from typing import List
 
 class Event:
 
@@ -70,3 +71,7 @@ class Calendar:
         for event in self.events:
             if re.match(r""+event_to_find, event.summary, re.IGNORECASE):
                 return event
+
+    def find_events(self, event_to_find) -> List[Event]:
+        self._fetch()
+        return [event for event in self.events if re.match(r""+event_to_find, event.summary, re.IGNORECASE)]

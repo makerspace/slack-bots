@@ -1,6 +1,7 @@
 from machine.plugins.base import MachineBasePlugin
 from machine.plugins.decorators import respond_to, listen_to, process, on
 import re, os
+from datetime import datetime
 
 from base.slack import Slack
 from base.calendar_parser import Calendar, Event
@@ -48,12 +49,18 @@ class AnswerFAQPlugin(MachineBasePlugin):
     @listen_to(regex=r'nyckelutlämning.*\?')
     @listen_to(regex=command.regex)
     def keyQuestion(self, msg):
-        event_nyckel = self.calendar.find_event('nyckelutlämning')
-        msgToSend = "Nyckelutlämningar sker ungefär varannan vecka och du måste boka en tid. Länken finns i Kalendariet https://www.makerspace.se/kalendarium"
-        if event_nyckel == None:
-            msgToSend += "\n"+"Det finns ingen planerad nyckelutläming."
+        events_nyckel = self.calendar.find_events('nyckelutlämning')
+        msgToSend = "Nyckelutlämningar sker ungefär varannan vecka och du måste boka en tid. Länken finns i Kalendariet (https://www.makerspace.se/kalendarium)."
+        if len(events_nyckel) == 0:
+            msgToSend += "\nDet finns ingen planerad nyckelutläming."
+        elif len(events_nyckel) == 1:
+            days_left = (events_nyckel[0].start_time.date() - datetime.now().date()).days
+            msgToSend += f"\n\nNästa utlämning är planerad till {events_nyckel[0].start_time.strftime('%Y-%m-%d %H:%M')} (om {days_left} dagar)"
         else:
-            msgToSend += "\n"+"Nästa utlämning är " + event_nyckel.start_time.strftime("%d/%m, %H:%M")
+            msgToSend += "\n\nDet finns flera planerade nyckelutlämningar:"
+            for event_nyckel, _ in zip(events_nyckel, range(5)):
+                days_left = (event_nyckel.start_time.date() - datetime.now().date()).days
+                msgToSend += f"\n  - {event_nyckel.start_time.strftime('%Y-%m-%d %H:%M')} (om {days_left} dagar)"
         self.slackUtil.sendMessage(msgToSend, msg)
 
     command = Command('box','Information om hur det fungerar med labblåda')
