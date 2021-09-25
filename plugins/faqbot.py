@@ -55,12 +55,12 @@ class AnswerFAQPlugin(MachineBasePlugin):
             msgToSend += "\nDet finns ingen planerad nyckelutläming."
         elif len(events_nyckel) == 1:
             days_left = (events_nyckel[0].start_time.date() - datetime.now().date()).days
-            msgToSend += f"\n\nNästa utlämning är planerad till {events_nyckel[0].start_time.strftime('%Y-%m-%d %H:%M')} (om {days_left} dagar)"
+            msgToSend += f"\n\nNästa utlämning är planerad till {events_nyckel[0].start_time.strftime('%Y-%m-%d %H:%M')}-{events_nyckel[0].end_time.strftime('%H:%M')} (om {days_left} dagar)"
         else:
             msgToSend += "\n\nDet finns flera planerade nyckelutlämningar:"
             for event_nyckel, _ in zip(events_nyckel, range(5)):
                 days_left = (event_nyckel.start_time.date() - datetime.now().date()).days
-                msgToSend += f"\n  - {event_nyckel.start_time.strftime('%Y-%m-%d %H:%M')} (om {days_left} dagar)"
+                msgToSend += f"\n  - {event_nyckel.start_time.strftime('%Y-%m-%d %H:%M')}-{event_nyckel.end_time.strftime('%H:%M')} (om {days_left} dagar)"
         self.slackUtil.sendMessage(msgToSend, msg)
 
     command = Command('box','Information om hur det fungerar med labblåda')
