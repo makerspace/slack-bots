@@ -20,12 +20,13 @@ class TrelloPlugin(MachineBasePlugin):
         trelloBot = Bot("trellobot", "har funktioner för att hantera kort på trello som används för spacets att-göra lista.")
         self.bots.add(trelloBot)
 
-    def init_final(self):
-    #@process('hello')
-    #def start(self, event):
-        self.slackUtil = Slack(self)
-        self.slackTrelloDB = SlackTrelloDB(self.slackUtil, self.trello, self.settings['SLACK_TRELLO_USER_DB'], self.settings['SLACK_TRELLO_USER_TABLE'])
-        self.slackUtil.sendStatusMessage("Trello plugin started.")
+    #Hello event triggers when the connection with slack is established
+    if __debug__:
+        @process('hello')
+        def start(self, event):
+            self.slackUtil = Slack(self)
+            self.slackTrelloDB = SlackTrelloDB(self.slackUtil, self.trello, self.settings['SLACK_TRELLO_USER_DB'], self.settings['SLACK_TRELLO_USER_TABLE'])
+            self.slackUtil.sendStatusMessage("Trello plugin started.")
 
     command = Command('trellobot', 'Beskrivning av trello botten')
     commands.add(command)
@@ -80,7 +81,7 @@ class TrelloPlugin(MachineBasePlugin):
             return
         self.slackUtil.sendStatusMessage("Succesfully stored slack, trello user association", msg)
 
-#TODO unlink trellouser thingy
+#TODO unlink trellouser function 
 
     def _assign(self, cardName, slackUser):
         if isinstance(slackUser, str):

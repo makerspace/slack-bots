@@ -24,11 +24,11 @@ class AnswerFAQPlugin(MachineBasePlugin):
             raise RuntimeError('BOT_CALENDAR_URL not set')
         self.calendar = Calendar(calendar_ical_url)
 
-    def init_final(self):
+    #Hello event triggers when the connection with slack is established
     #@process('hello')
     #def start(self, event):
-        self.slackUtil = Slack(self)
-        self.slackUtil.sendStatusMessage("FAQ plugin started.")
+        #self.slackUtil = Slack(self)
+        #self.slackUtil.sendStatusMessage("FAQ plugin started.")
 
     command = Command("faqbot", "Beskrivning av faq botten", aliases=["aboutfaqbot"])
     commands.add(command)

@@ -15,11 +15,12 @@ class MachinePlugin(MachineBasePlugin):
         machineBot = Bot("machinebot", "har funktioner relaterat till status på spacets maskiner")
         self.bots.add(machineBot)
 
-    def init_final(self):
-    #@process('hello')
-    #def start(self, event):
-        self.slackUtil = Slack(self)
-        self.slackUtil.sendStatusMessage("Machine plugin started.")
+    #Hello event triggers when the connection with slack is established
+    if __debug__:
+        @process('hello')
+        def start(self, event):
+            self.slackUtil = Slack(self)
+            self.slackUtil.sendStatusMessage("Machine plugin started.")
 
     command = Command('machinebot', 'Beskrivning av maskin botten')
     commands.add(command)
@@ -31,14 +32,14 @@ class MachinePlugin(MachineBasePlugin):
     command = Command('setstatus', 'Sätt status på en maskin', 1)
     commands.add(command)
     @listen_to(regex=command.regex)
-    def setStatusSlack(self, msg):
+    def setStatusSlack(self, msg): #TODO
         msgToSend="Asdf"
         self.slackUtil.sendMessage(msgToSend, msg)
 
     command = Command('getstatus', 'Hämta status på en maskin', 1)
     commands.add(command)
     @listen_to(regex=command.regex)
-    def getStatusSlack(self, msg):
+    def getStatusSlack(self, msg): #TODO
         msgToSend="Asdf"
         self.slackUtil.sendMessage(msgToSend, msg)
 
