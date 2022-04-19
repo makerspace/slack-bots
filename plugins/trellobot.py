@@ -21,11 +21,11 @@ class TrelloPlugin(MachineBasePlugin):
         self.bots.add(trelloBot)
 
     #Hello event triggers when the connection with slack is established
-    if __debug__:
-        @process('hello')
-        def start(self, event):
-            self.slackUtil = Slack(self)
-            self.slackTrelloDB = SlackTrelloDB(self.slackUtil, self.trello, self.settings['SLACK_TRELLO_USER_DB'], self.settings['SLACK_TRELLO_USER_TABLE'])
+    @process('hello')
+    def start(self, event):
+        self.slackUtil = Slack(self)
+        self.slackTrelloDB = SlackTrelloDB(self.slackUtil, self.trello, self.settings['SLACK_TRELLO_USER_DB'], self.settings['SLACK_TRELLO_USER_TABLE'])
+        if __debug__:
             self.slackUtil.sendStatusMessage("Trello plugin started.")
 
     command = Command('trellobot', 'Beskrivning av trello botten')

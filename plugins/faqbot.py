@@ -25,10 +25,11 @@ class AnswerFAQPlugin(MachineBasePlugin):
         self.calendar = Calendar(calendar_ical_url)
 
     #Hello event triggers when the connection with slack is established
-    #@process('hello')
-    #def start(self, event):
-        #self.slackUtil = Slack(self)
-        #self.slackUtil.sendStatusMessage("FAQ plugin started.")
+    @process('hello')
+    def start(self, event):
+        self.slackUtil = Slack(self)
+        if __debug__:
+            self.slackUtil.sendStatusMessage("FAQ plugin started.")
 
     command = Command("faqbot", "Beskrivning av faq botten", aliases=["aboutfaqbot"])
     commands.add(command)

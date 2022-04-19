@@ -20,10 +20,10 @@ class UtilPlugin(MachineBasePlugin):
         self.calendar = Calendar(calendar_ical_url)
 
     #Hello event triggers when the connection with slack is established
-    if __debug__:
-        @process('hello')
-        def start(self, event):
-            self.slackUtil = Slack(self)
+    @process('hello')
+    def start(self, event):
+        self.slackUtil = Slack(self)
+        if __debug__:
             self.slackUtil.sendStatusMessage("Util plugin started.")
 
     command = Command('about','Information om botten', aliases=['help'])

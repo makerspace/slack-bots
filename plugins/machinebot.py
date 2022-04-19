@@ -16,10 +16,10 @@ class MachinePlugin(MachineBasePlugin):
         self.bots.add(machineBot)
 
     #Hello event triggers when the connection with slack is established
-    if __debug__:
-        @process('hello')
-        def start(self, event):
-            self.slackUtil = Slack(self)
+    @process('hello')
+    def start(self, event):
+        self.slackUtil = Slack(self)
+        if __debug__:
             self.slackUtil.sendStatusMessage("Machine plugin started.")
 
     command = Command('machinebot', 'Beskrivning av maskin botten')
